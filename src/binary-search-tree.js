@@ -54,14 +54,62 @@ class BinarySearchTree {
     }
   }
 
-  find(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  find(data) {
+    return searchNodeInside(this.rootNode, data);
+
+    function searchNodeInside(node, value){
+      if(!node){
+        return null;
+      }
+      if(node.data === value){
+        return node;
+      }
+      if(value < node.data){
+        return searchNodeInside(node.left, value);
+      }
+      if(value > node.data){
+        return searchNodeInside(node.right, value);
+      }
+    }
   }
 
-  remove(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  remove(data) {
+    this.rootNode = removeInside(this.rootNode, data);
+
+    function removeInside(node, value){
+      if(!node){
+        return null;
+      }
+      if(node.data === value){
+        if(!node.left && !node.right){
+          return null;
+        }
+        if(!node.left){
+          node = node.right;
+          return node;
+        }
+        if(!node.right){
+          node = node.left;
+          return node;
+        }
+
+        let minNodeRight = node.right;
+        while(minNodeRight.left){
+          minNodeRight = minNodeRight.left;
+        }
+        node.data = minNodeRight.data;
+        node.right = removeInside(node.right, minNodeRight.data);
+        return node;
+      }
+      if(value < node.data){
+        node.left = removeInside(node.left, value);
+        return node;
+      }
+      if(value > node.data){
+        node.right = removeInside(node.right, value);
+        return node;
+      }
+    }
   }
 
   min() {
